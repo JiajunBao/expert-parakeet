@@ -5,7 +5,7 @@ import torch.optim as optim
 from model import HierarchialAttentionNetwork
 from utils import *
 from datasets import HANDataset
-import copy
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 # Data parameters
 data_folder = './checkpoints'
@@ -76,6 +76,8 @@ def main():
     # Loss functions
     criterion = nn.CrossEntropyLoss()
 
+    scheduler = ReduceLROnPlateau(optimizer, 'min', factor=0.5)
+
     # Move to device
     model = model.to(device)
     criterion = criterion.to(device)
@@ -94,14 +96,15 @@ def main():
     # Epochs
     for epoch in range(start_epoch, epochs):
         # One epoch's training
-        train(train_loader=train_loader,
-              model=model,
-              criterion=criterion,
-              optimizer=optimizer,
-              epoch=epoch)
+        _, train_avg_loss = train(train_loader=train_loader,
+                                  model=model,
+                                  criterion=criterion,
+                                  optimizer=optimizer,
+                                  epoch=epoch)
 
         # Decay learning rate every epoch
-        adjust_learning_rate(optimizer, 0.1)
+        # adjust_learning_rate(optimizer, 0.1)
+        scheduler.step(train_avg_loss)
 
         avg_acc, avg_loss = evaluate(dev_loader=dev_loader,
                                      model=model,
@@ -261,6 +264,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
                                                                   batch_time=batch_time,
                                                                   data_time=data_time, loss=losses,
                                                                   acc=accs))
+    return accs.avg, losses.avg
 
 
 if __name__ == '__main__':
