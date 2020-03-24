@@ -29,9 +29,9 @@ batch_size = 64  # batch size
 lr = 1e-3  # learning rate
 momentum = 0.9  # momentum
 workers = 4  # number of workers for loading data in the DataLoader
-epochs = 2  # number of epochs to run
+epochs = 50  # number of epochs to run
 grad_clip = None  # clip gradients at this value
-print_freq = 2000  # print training or validation status every __ batches
+print_freq = 200  # print training or validation status every __ batches
 checkpoint = None  # path to model checkpoint, None if none
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
