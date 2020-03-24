@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+# venv
+venv
+
 # Distribution / packaging
 .Python
 env/
@@ -76,7 +79,7 @@ target/
 .ipynb_checkpoints/
 
 # exclude data from source control by default
-/data/
+#/data/
 
 # Mac OS-specific storage files
 .DS_Store
