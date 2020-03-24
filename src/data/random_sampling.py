@@ -71,8 +71,8 @@ def random_splitting(df):
 if __name__ == "__main__":
     # get the absolute path to the original dataset
     root_filepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    rel_input_filepath = "dataset/processed/processed_data.csv"
-    rel_output_filepath = "dataset/processed/"
+    rel_input_filepath = "data/processed/processed_data.csv"
+    rel_output_filepath = "data/processed/"
     input_filepath = os.path.join(root_filepath, rel_input_filepath)
     output_filepath = os.path.join(root_filepath, rel_output_filepath)
 
