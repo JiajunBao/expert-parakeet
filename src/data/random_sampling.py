@@ -3,12 +3,18 @@ import pandas as pd
 import data_processing
 import random
 import math
+from enum import Enum
+
+# if the data size of a label is less than NOISE_NUM, then we consider it a Noise
+NOISE_THRESHOLD = 10
 
 def pandas_setting():
     pd.set_option('display.width', 400)
     pd.set_option('display.max_columns', 10)
     pd.set_option('max_colwidth', 100)
 
+
+# read csv from the result of proprecessing.py
 def read_csv(input_filepath):
     lines, label = [], []
     with open(input_filepath, 'r') as file:
@@ -19,15 +25,20 @@ def read_csv(input_filepath):
     df = pd.DataFrame(data={'label': label, 'data': lines})
     return df
 
-
-def undersampling(df):
-    print(df)
-
+# remove the label with less than NOISE_NUM data
+def noise_remove(df):
     # find the minimal count value for undersampling
-    counts = data_processing.attribute_counts(df, 'label')
-    print(counts)
-    min_counts = min(counts, key=lambda x: x[1])[1]
-    print(min_counts)
+    min_count, avail_labels = data_processing.available_label(
+        df, 'label', data_processing.Type.STRING)
+    new_df = df[df['label'].isin(avail_labels)]
+    return new_df
+
+
+# undersampling to produce the label balanced training data
+def undersampling(df):
+
+    # get the min_count of labels
+    min_counts, _ = data_processing.available_label(df, 'label', data_processing.Type.STRING)
     newdf = df.groupby('label')['data'].apply(list)
 
     sampled_lines = []
@@ -47,12 +58,6 @@ def undersampling(df):
     data_processing.output_file(train_data, output_filepath + "sampled_train.csv")
     data_processing.output_file(dev_data, output_filepath + "sampled_dev.csv")
     data_processing.output_file(test_data, output_filepath + "sampled_test.csv")
-
-    # for sampled_line in sampled_lines:
-    #     output_lines.append(",".join(line for line in sampled_line) + "\n")
-
-    # data_processing.output_file(output_lines, output_filepath + "sampled_train.csv")
-    # return output_lines
 
 
 def random_splitting(df):
@@ -78,10 +83,11 @@ if __name__ == "__main__":
 
     pandas_setting()
     dataframe = read_csv(input_filepath)
+    dataframe = noise_remove(dataframe)
 
 
     # output the random_splitting
-    # random_splitting(dataframe)
+    random_splitting(dataframe)
 
     # output the random_sampling
     undersampling(dataframe)
