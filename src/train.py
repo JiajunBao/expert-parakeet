@@ -25,11 +25,11 @@ fine_tune_word_embeddings = True  # fine-tune word embeddings?
 
 # Training parameters
 start_epoch = 0  # start at this epoch
-batch_size = 128  # batch size
+batch_size =256  # batch size
 lr = 1e-4  # learning rate
 momentum = 0.9  # momentum
 workers = 4  # number of workers for loading data in the DataLoader
-epochs = 200  # number of epochs to run
+epochs = 400  # number of epochs to run
 grad_clip = None  # clip gradients at this value
 print_freq = 200  # print training or validation status every __ batches
 checkpoint = None  # path to model checkpoint, None if none
