@@ -17,8 +17,8 @@ def read_csv(input_filepath):
 
 
 if __name__ == "__main__":
-    train_y, train_X = read_csv("../data/processed/sampled_train.csv")
-    test_y, test_X = read_csv("../data/processed/sampled_test.csv")
+    train_y, train_X = read_csv("../data/interim/sampled_train.csv")
+    test_y, test_X = read_csv("../data/interim/sampled_test.csv")
 
     text_clf = Pipeline([('vect', CountVectorizer()), ('tfidf', TfidfTransformer()), ('clf', SVC())])
     text_clf.fit(train_X, train_y)
