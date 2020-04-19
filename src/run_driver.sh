@@ -4,4 +4,5 @@
 --epochs 5 \
 --learning_rate 1e-5 \
 --per_gpu_batch_size 64 \
+--weight_decay 1e-5 \
 --comment albert

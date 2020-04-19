@@ -16,6 +16,8 @@ def get_arguments():
                         help='directory to the output data, e.g. ./output')
     parser.add_argument('--learning_rate', type=float, required=True,
                         help='learning rate')
+    parser.add_argument('--weight_decay', type=float, required=True,
+                        help='learning rate')
     parser.add_argument('--epochs', type=int, required=True,
                         help='number of training epochs')
     parser.add_argument('--per_gpu_batch_size', type=int, required=True,
