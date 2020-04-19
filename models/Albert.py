@@ -74,6 +74,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         }
         outputs = self.model(**batch_input)
         logits = outputs[1].view(-1, self.num_labels)
+        print(logits.shape)
         return logits
 
     @staticmethod
