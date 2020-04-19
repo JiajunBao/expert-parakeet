@@ -12,7 +12,7 @@ from torch.utils.data import TensorDataset
 logger = logging.getLogger(__name__)
 
 
-class AlbertForReviewClassification(AlbertForSequenceClassification):
+class AlbertForReviewClassification(AlbertForSequenceClassification, nn.Module):
     def __init__(self, config):
         super().__init__(config)
         self.label_names = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
