@@ -1,6 +1,6 @@
 import torch
 from tqdm.auto import tqdm
-from tensorboardX import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 import os
 
