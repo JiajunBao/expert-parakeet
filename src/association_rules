@@ -1,0 +1,74 @@
+import csv
+import pandas as pd
+import numpy as np
+from mlxtend.frequent_patterns import apriori, association_rules
+import matplotlib.pyplot as plt
+
+
+def init():
+    pd.set_option('display.width', 400)
+    pd.set_option('display.max_columns', 20)
+    pd.set_option('display.max_colwidth', 1000)
+    pd.set_option('display.max_rows', None)
+
+
+# read csv from the result of user_by_item.py
+def read_csv(input_filepath):
+    with open(input_filepath, 'r') as instream:
+        reader = csv.reader(instream, delimiter=',')
+        lines = list(reader)
+    return lines
+
+
+# put data into 1s and 0s
+def encoding(df):
+    items = (df.loc[:, 0].unique())
+    encoded_vals = []
+    for index, row in df.iterrows():
+        labels = {}
+        uncommons = list(set(items) - set(row))
+        commons = list(set(items).intersection(row))
+        for uc in uncommons:
+            labels[uc] = 0
+        for com in commons:
+            labels[com] = 1
+        encoded_vals.append(labels)
+    return encoded_vals
+
+
+def rules_figure(rules):
+
+    # support and confidence
+    plt.scatter(rules['support'], rules['confidence'], alpha=0.5)
+    plt.xlabel('support')
+    plt.ylabel('confidence')
+    plt.title('Support vs Confidence')
+    plt.show()
+
+    # support and lift
+    plt.scatter(rules['support'], rules['lift'], alpha = 0.5)
+    plt.xlabel('support')
+    plt.ylabel('lift')
+    plt.title('Support vs Lift')
+    plt.show()
+
+    # lift and confidence
+    fit = np.polyfit(rules['lift'], rules['confidence'], 1)
+    fit_fn = np.poly1d(fit)
+    plt.plot(rules['lift'], rules['confidence'], 'yo', rules['lift'], fit_fn(rules['lift']))
+    plt.show()
+
+
+if __name__ == "__main__":
+    init()
+    dataset = read_csv("../data/interim/user_by_item.csv")
+    df = pd.DataFrame(dataset)
+    encoded_df = pd.DataFrame(encoding(df))
+    freq_items = apriori(encoded_df, min_support=0.05, use_colnames=True, verbose=1)
+    print(freq_items)
+    rules = association_rules(freq_items, metric="confidence", min_threshold=0.3)
+    print(rules)
+    rules_figure(rules)
+
+
+

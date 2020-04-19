@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import collections
+import csv
 import math
 from nltk.tokenize import sent_tokenize
 from enum import Enum
@@ -16,8 +17,9 @@ class Type(Enum):
 # read file and set pandas
 def read_file(input_filepath, output_filepath):
     pd.set_option('display.width', 400)
-    pd.set_option('display.max_columns', 10)
-    pd.set_option('max_colwidth', 1000)
+    pd.set_option('display.max_columns', 20)
+    pd.set_option('display.max_colwidth', 1000)
+    pd.set_option('display.max_rows', None)
     data = pd.read_json(input_filepath, lines=True)
     return data
 
@@ -75,6 +77,20 @@ def feature_selection(data, data_attribute, label_attribute, type):
     return output_data
 
 
+def groupby_attribute(df, key, value):
+    itemCounts = df.user_id.value_counts()
+    reduced_df = df[df.user_id.isin(itemCounts.index[itemCounts.gt(1)])]
+    item_user_map = reduced_df.groupby(key)[value].apply(set)
+    for key, values in item_user_map.items():
+        if len(values) < 2: del item_user_map[key]
+    return item_user_map
+
+
+def output_groupby(map, outputpath):
+    lines = [",".join(list(value)) + "\n" for key, value in map.items()]
+    output_file(lines, outputpath)
+
+
 def output_file(data, output_filepath):
     with open(output_filepath, "w") as file:
         for line in data:
@@ -86,15 +102,12 @@ if __name__ == "__main__":
     # get the absolute path to the original dataset
     root_filepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     rel_input_filepath = "../raw/renttherunway_final_data.json"
-    rel_output_filepath = "data/processed/processed_data.csv"
+    rel_output_filepath = "data/interim/processed_data.csv"
     input_filepath = os.path.join(root_filepath, rel_input_filepath)
     output_filepath = os.path.join(root_filepath, rel_output_filepath)
 
     dataset = read_file(input_filepath, "")
-    feature = "rented for"
-
-    # get unique value of a column
-    # print(dataset['category'].unique())
+    feature = ["rented for", "rating", "category"]
 
     # get rating
     # dataset = dataset[dataset["rating"].notna()]
@@ -103,8 +116,24 @@ if __name__ == "__main__":
     # output_file(output_data, output_filepath)
 
     # get rented for
-    dataset = dataset[dataset[feature].notna()]
-    available_label(dataset, feature, Type.STRING)
-    print(attribute_counts(dataset, feature, Type.STRING))
-    output_data = feature_selection(dataset, "review_text", feature, Type.STRING)
-    output_file(output_data, output_filepath)
+    # dataset = dataset[dataset["rented for"].notna()]
+    # available_label(dataset, "rented for", Type.STRING)
+    # print(attribute_counts(dataset, "rented for", Type.STRING))
+    # output_data = feature_selection(dataset, "review_text", feature, Type.STRING)
+    # output_file(output_data, output_filepath)
+
+    # get category
+    # dataset = dataset[dataset["category"].notna()]
+    # available_label(dataset, "category", Type.STRING)
+    # counts = attribute_counts(dataset, "category", Type.STRING)
+    # print(sorted(counts, key=lambda x: x[1]))
+
+    # get hashmap key = user_id, value = count of items user bought
+    # item_user_map = dataset.groupby('user_id')['item_id'].count().sort_values(ascending=False)
+    # item_user_map.to_csv(os.path.join(root_filepath, "data/interim/user_by_item.csv"))
+
+    # get hashmap key = user_id, value = list of item_id
+    item_user_map = groupby_attribute(dataset, 'user_id', 'category')
+    output_groupby(item_user_map, os.path.join(root_filepath, "data/interim/user_by_item.csv"))
+    # item_user_map.to_csv(os.path.join(root_filepath, "data/interim/user_by_item.csv"), quoting=csv.QUOTE_NONNUMERIC)
+
