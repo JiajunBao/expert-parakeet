@@ -61,12 +61,9 @@ preds = torch.cat(preds, dim=0).cpu()
 golds = torch.cat(golds, dim=0).cpu()
 
 print('\n * TEST ACCURACY - %.1f per cent\n' % (accs.avg * 100))
+lb = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
 print(preds.eq(golds).sum().item() / preds.shape[0])
-print((preds[golds == 0] == 0).sum().item() / (golds == 0).sum().item())
-print((preds[golds == 1] == 1).sum().item() / (golds == 1).sum().item())
-print((preds[golds == 2] == 2).sum().item() / (golds == 2).sum().item())
-print((preds[golds == 3] == 3).sum().item() / (golds == 3).sum().item())
-print((preds[golds == 4] == 4).sum().item() / (golds == 4).sum().item())
-print((preds[golds == 5] == 5).sum().item() / (golds == 5).sum().item())
-print((preds[golds == 6] == 6).sum().item() / (golds == 6).sum().item())
-print((preds[golds == 7] == 7).sum().item() / (golds == 7).sum().item())
+
+for i in range(8):
+    print(lb[i], (preds[golds == i] == i).sum().item() / (golds == i).sum().item())
+
