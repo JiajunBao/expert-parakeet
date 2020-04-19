@@ -30,6 +30,9 @@ test_loader = torch.utils.data.DataLoader(HANDataset(data_folder, 'test'), batch
 accs = AverageMeter()  # accuracies
 
 # Evaluate in batches
+preds = list()
+golds = list()
+
 for i, (documents, sentences_per_document, words_per_sentence, labels) in enumerate(
         tqdm(test_loader, desc='Evaluating')):
 
@@ -46,11 +49,21 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
     _, predictions = scores.max(dim=1)  # (n_documents)
     correct_predictions = torch.eq(predictions, labels).sum().item()
     accuracy = correct_predictions / labels.size(0)
-
+    preds.append(correct_predictions)
+    golds.append(labels)
     # Keep track of metrics
     accs.update(accuracy, labels.size(0))
 
     start = time.time()
 
 # Print final result
+preds = torch.cat(preds, dim=0).cpu()
+golds = torch.cat(golds, dim=0).cpu()
+
 print('\n * TEST ACCURACY - %.1f per cent\n' % (accs.avg * 100))
+lb = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
+print(preds.eq(golds).sum().item() / preds.shape[0])
+
+for i in range(8):
+    print(lb[i], (preds[golds == i] == i).sum().item() / (golds == i).sum().item())
+

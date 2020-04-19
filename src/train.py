@@ -14,8 +14,8 @@ with open(os.path.join(data_folder, 'word_map.json'), 'r') as j:
 
 # Model parameters
 n_classes = len(label_map)
-word_rnn_size = 50  # word RNN size
-sentence_rnn_size = 50  # character RNN size
+word_rnn_size = 64  # word RNN size
+sentence_rnn_size = 256  # character RNN size
 word_rnn_layers = 1  # number of layers in character RNN
 sentence_rnn_layers = 1  # number of layers in word RNN
 word_att_size = 100  # size of the word-level attention layer (also the size of the word context vector)
@@ -26,7 +26,7 @@ fine_tune_word_embeddings = True  # fine-tune word embeddings?
 # Training parameters
 start_epoch = 0  # start at this epoch
 batch_size = 128  # batch size
-lr = 1e-4  # learning rate
+lr = 8e-4  # learning rate
 momentum = 0.9  # momentum
 workers = 4  # number of workers for loading data in the DataLoader
 epochs = 400  # number of epochs to run
