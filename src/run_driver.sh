@@ -1,4 +1,4 @@
-python albert_driver.py
+python albert_driver.py \
 --input_dir data/processed/balanced \
 --output_dir checkpoints/albert/ \
 --epochs 5 \
