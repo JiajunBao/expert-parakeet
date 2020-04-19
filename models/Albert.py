@@ -5,10 +5,10 @@ import torch
 from tqdm.auto import tqdm
 
 from transformers.optimization import AdamW
-from transformers import AlbertModel, AlbertTokenizer, AlbertForSequenceClassification, AlbertConfig
+from transformers import AlbertTokenizer, AlbertForSequenceClassification, AlbertConfig
 from transformers import get_linear_schedule_with_warmup
 from torch.utils.data import TensorDataset
-
+from torch
 
 logger = logging.getLogger(__name__)
 
@@ -173,3 +173,10 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
             loss_fct = nn.CrossEntropyLoss()
             logger.info('The solver validates with CrossEntropyLoss.')
         return loss_fct
+
+    @staticmethod
+    def get_scores(pred, gold):
+        smax = nn.Softmax(dim=1)
+        pred_idx = torch.argmax(smax(pred))
+        correct = pred_idx.eq(gold).sum()
+        return {"Accuracy": correct / len(gold), "CrossEntropyLoss": nn.CrossEntropyLoss()(gold, pred)}
