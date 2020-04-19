@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.svm import SVC
+from sklearn.decomposition import TruncatedSVD
 from sklearn.pipeline import Pipeline
 import numpy as np
 
@@ -20,9 +21,23 @@ if __name__ == "__main__":
     train_y, train_X = read_csv("../data/interim/sampled_train.csv")
     test_y, test_X = read_csv("../data/interim/sampled_test.csv")
 
-    text_clf = Pipeline([('vect', CountVectorizer()), ('tfidf', TfidfTransformer()), ('clf', SVC())])
-    text_clf.fit(train_X, train_y)
 
-    predicted = text_clf.predict(test_X)
-    print(np.mean(predicted == test_y))
+    pca = TruncatedSVD(n_components=8)  # 8 categoly
+
+
+    text_clf = Pipeline([('vect', CountVectorizer()), ('tfidf', TfidfTransformer())])
+    text_clf.fit(train_X, train_y)
+    print(text_clf.shape[0])
+
+
+
+
+
+    # text_clf = Pipeline([('vect', CountVectorizer()), ('tfidf', TfidfTransformer()), ('pca', pca), ('clf', SVC())])
+    # text_clf.fit(train_X, train_y)
+    #
+    # predicted = text_clf.predict(test_X)
+    # print(np.mean(predicted == test_y))
+    # print(pca.explained_variance_ratio_)
+    # print(pca.explained_variance_ratio_.cumsum())
 

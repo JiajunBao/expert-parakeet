@@ -55,6 +55,7 @@ def available_label(df, feature, type):
     noise_remove_counts = [count for count in sorted_counts if count[1] >= NOISE_THRESHOLD]
     labels = [count[0] for count in noise_remove_counts]
     # print("labels is " + " ".join(labels))
+    print(counts)
     min_counts = noise_remove_counts[0]
     # print("min_count is {}".format(min_counts[1]))
     return min_counts[1], labels
@@ -63,7 +64,7 @@ def available_label(df, feature, type):
 # feature selection for embedding layer
 def feature_selection(data, data_attribute, label_attribute, type):
     output_data = []
-    min_count, avail_labels = available_label(data, feature, type)
+    min_count, avail_labels = available_label(data, label_attribute, type)
     for idx, (content, label) in enumerate(zip(data[data_attribute], data[label_attribute])):
         if label not in avail_labels: continue
         lines = sent_tokenize(content)
@@ -101,13 +102,13 @@ if __name__ == "__main__":
 
     # get the absolute path to the original dataset
     root_filepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    rel_input_filepath = "../raw/renttherunway_final_data.json"
+    rel_input_filepath = "../raw/renttherunway_final_data_500.json"
     rel_output_filepath = "data/interim/processed_data.csv"
     input_filepath = os.path.join(root_filepath, rel_input_filepath)
     output_filepath = os.path.join(root_filepath, rel_output_filepath)
 
     dataset = read_file(input_filepath, "")
-    feature = ["rented for", "rating", "category"]
+    # feature = ["rented for", "rating", "category"]
 
     # get rating
     # dataset = dataset[dataset["rating"].notna()]
@@ -116,11 +117,11 @@ if __name__ == "__main__":
     # output_file(output_data, output_filepath)
 
     # get rented for
-    # dataset = dataset[dataset["rented for"].notna()]
-    # available_label(dataset, "rented for", Type.STRING)
-    # print(attribute_counts(dataset, "rented for", Type.STRING))
-    # output_data = feature_selection(dataset, "review_text", feature, Type.STRING)
-    # output_file(output_data, output_filepath)
+    dataset = dataset[dataset["rented for"].notna()]
+    available_label(dataset, "rented for", Type.STRING)
+    print(attribute_counts(dataset, "rented for", Type.STRING))
+    output_data = feature_selection(dataset, "review_text", "rented for", Type.STRING)
+    output_file(output_data, output_filepath)
 
     # get category
     # dataset = dataset[dataset["category"].notna()]
@@ -128,12 +129,7 @@ if __name__ == "__main__":
     # counts = attribute_counts(dataset, "category", Type.STRING)
     # print(sorted(counts, key=lambda x: x[1]))
 
-    # get hashmap key = user_id, value = count of items user bought
-    # item_user_map = dataset.groupby('user_id')['item_id'].count().sort_values(ascending=False)
-    # item_user_map.to_csv(os.path.join(root_filepath, "data/interim/user_by_item.csv"))
-
     # get hashmap key = user_id, value = list of item_id
-    item_user_map = groupby_attribute(dataset, 'user_id', 'category')
-    output_groupby(item_user_map, os.path.join(root_filepath, "data/interim/user_by_item.csv"))
-    # item_user_map.to_csv(os.path.join(root_filepath, "data/interim/user_by_item.csv"), quoting=csv.QUOTE_NONNUMERIC)
+    # item_user_map = groupby_attribute(dataset, ['user_id'], 'category')
+    # output_groupby(item_user_map, os.path.join(root_filepath, "data/interim/user_by_item.csv"))
 

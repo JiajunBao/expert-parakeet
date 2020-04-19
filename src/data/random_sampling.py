@@ -2,6 +2,9 @@ import os
 import pandas as pd
 import data_processing
 import random
+import collections
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize, SpaceTokenizer
 import math
 from enum import Enum
 
@@ -73,11 +76,46 @@ def random_splitting(df):
     data_processing.output_file(test_data, output_filepath + "ranspt_test.csv")
 
 
+def vocabulary_count(df):
+
+    # df_cate = df.groupby('label')['data'].apply(sum)
+    # print("hello world")
+    #
+    # for index, row in df_cate.iteritems():
+    #     text = " ".join([str(sent).replace("\"", "") for sent in row])
+    #     counter = collections.Counter(text.split(" "))
+    #     distinct_words_N = len(counter)
+    #     words_N = sum(counter.values())
+    #     print("{} distinct words, {} words in category {}".format(distinct_words_N, words_N, index))
+
+    for index, row in df.iterrows():
+
+        text = " ".join([str(sent).replace("\"", "").replace("\'", "") for sent in row['data']])
+        # occasion =
+        counter = collections.Counter(text.split(" "))
+        print(row['label'])
+        print(counter)
+
+
+
+
+# split human count case From test data
+def human_count(input_filepath, output_filepath):
+    with open(input_filepath, 'r') as file:
+        lines = []
+        for raw_line in file:
+
+            line = raw_line.strip().split(",")
+            newline = " ".join(line[1:]) + ", " + line[0]
+
+
+
+
 if __name__ == "__main__":
     # get the absolute path to the original dataset
     root_filepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    rel_input_filepath = "data/processed/processed_data.csv"
-    rel_output_filepath = "data/processed/"
+    rel_input_filepath = "data/interim/processed_data.csv"
+    rel_output_filepath = "data/interim/"
     input_filepath = os.path.join(root_filepath, rel_input_filepath)
     output_filepath = os.path.join(root_filepath, rel_output_filepath)
 
@@ -85,9 +123,12 @@ if __name__ == "__main__":
     dataframe = read_csv(input_filepath)
     dataframe = noise_remove(dataframe)
 
-
     # output the random_splitting
-    random_splitting(dataframe)
+    # random_splitting(dataframe)
 
     # output the random_sampling
-    undersampling(dataframe)
+    # undersampling(dataframe)
+
+    # print the vocabulary count of each catalog
+    vocabulary_count(dataframe)
+    # print(dataframe)
