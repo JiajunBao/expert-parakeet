@@ -57,6 +57,7 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
     start = time.time()
 
 # Print final result
+print(preds)
 preds = torch.cat(preds, dim=0).cpu()
 golds = torch.cat(golds, dim=0).cpu()
 
