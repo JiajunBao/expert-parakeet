@@ -175,18 +175,18 @@ class Solver(object):
         return preds, golds
 
     def set_train_dataloader(self):
-        data_path = self.args.input_dir / 'train.csv'
+        data_path = self.args.input_dir / 'train'
         dataset = self.__set_dataset(data_path)
         self.train_dataloader = DataLoader(dataset, shuffle=True, batch_size=self.batch_size)
         return self.train_dataloader
 
     def set_dev_dataloader(self):
-        data_path = self.args.input_dir / 'dev.csv'
+        data_path = self.args.input_dir / 'dev'
         dataset = self.__set_dataset(data_path)
         self.dev_dataloader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size)
 
     def set_test_dataloader(self):
-        data_path = self.args.input_dir / 'test.csv'
+        data_path = self.args.input_dir / 'test'
         dataset = self.__set_dataset(data_path)
         self.test_dataloader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size)
 
