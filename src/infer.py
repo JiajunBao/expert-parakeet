@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 # item()
 
-checkpoints_path = Path('checkpoints/albert_balanced/')
+checkpoints_path = Path('checkpoints/albert')
 
 checkpoints = torch.load(checkpoints_path / 'best_model.pth.tar')
 model = AlbertForReviewClassification.from_pretrained('albert-base-v2', num_labels=8)
@@ -18,7 +18,7 @@ model.load_state_dict(checkpoints["model"])
 args = torch.load(checkpoints_path / 'best_trainer.pth.tar')['args']
 logger.info("model load completed")
 trainer = Solver(args, model)
-preds, golds, _, _ = trainer.infer(Path('data/processed/balanced/test'))
+preds, golds, _, _ = trainer.infer(Path('data/processed/full/test'))
 torch.save(preds, checkpoints_path / 'preds.pth')
 torch.save(golds, checkpoints_path / 'golds.pth')
 print(preds.eq(golds).sum().item() / preds.shape[0])
