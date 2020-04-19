@@ -106,7 +106,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
             # encode of the Albert encoding
             texts = list()
             labels = list()
-            with open(data_path, 'r') as istream:
+            with open(data_path / 'raw.csv', 'r') as istream:
                 for line in istream:
                     parts = line.split(',', 1)
                     review = parts[1].strip('"').strip().replace('","', '')
