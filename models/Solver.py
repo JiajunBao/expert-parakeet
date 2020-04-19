@@ -47,8 +47,8 @@ class Solver(object):
         self.optimizer, self.scheduler = model.get_optimizer(self)
 
         # checkpoints
-        self.best_optimizer = None
-        self.best_model = None
+        self.best_optimizer_dict = None
+        self.best_model_dict = None
         self.held_loss = float("Inf")
 
     def fit(self, num_eval_per_epoch=5):
@@ -113,8 +113,9 @@ class Solver(object):
                 if batch_idx % steps_per_eval == 0:
                     mean_loss = self.validate(callback)
                     if mean_loss < self.held_loss:
-                        self.best_model = copy.deepcopy(self.model)
-                        self.best_optimizer = copy.deepcopy(self.optimizer)
+                        self.best_model_dict = self.model.state_dict() if self.args.n_gpu <= 1 \
+                            else self.model.module.state_dict()
+                        self.best_optimizer_dict = self.optimizer.state_dict()
                         self.held_loss = mean_loss
 
                         # self.scheduler.step()  # Update learning rate schedule
@@ -199,7 +200,7 @@ class Solver(object):
         pass
 
     def save_best_checkpoints(self):
-        self.__save_checkpoints(self.args, self.n_gpu, self.best_optimizer, self.best_model,
+        self.__save_checkpoints(self.args, self.n_gpu, self.best_optimizer_dict, self.best_model_dict,
                                 self.args.output_dir, "best", self.logger)
 
     def save_final_checkpoints(self):
@@ -207,23 +208,23 @@ class Solver(object):
                                 self.args.output_dir, "final", self.logger)
 
     @staticmethod
-    def __save_checkpoints(args, n_gpu, optimizer, model, output_dir, prefix, logger):
+    def __save_checkpoints(args, n_gpu, optimizer_dict, model_dict, output_dir, prefix, logger):
         save_directory = output_dir
         os.makedirs(save_directory, exist_ok=True)
         output_path = output_dir / f'{prefix}_trainer.pth.tar'
         # save the trainer
         torch.save(
             {'args': args,
-             'optimizer': optimizer.state_dict()},
+             'optimizer': optimizer_dict},
             output_path
         )
         logger.info(f'Saved the trainer at {output_path}')
         # save the model
         output_path = output_dir / f'{prefix}_model.pth.tar'
         if n_gpu > 1:
-            torch.save({"opt": model.opt, "model": model.module.state_dict()}, output_path)
+            torch.save({"opt": model_dict.opt, "model": model_dict}, output_path)
         else:
-            torch.save({"opt": model.opt, "model": model.state_dict()}, output_path)
+            torch.save({"opt": model_dict.opt, "model": model_dict}, output_path)
         logger.info(f'Saved model checkpoints to {output_path}')
 
     def infer(self, data_path):
