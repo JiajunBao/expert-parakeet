@@ -1,7 +1,8 @@
 import logging
 from torch import nn
 import torch
-import pandas as pd
+
+from tqdm.auto import tqdm
 
 from transformers.optimization import AdamW
 from transformers import AlbertModel, AlbertTokenizer, AlbertForSequenceClassification, AlbertConfig
@@ -102,12 +103,11 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         else:
             tokenizer = AlbertTokenizer.from_pretrained('albert-base-v2')
             sequence_length = 128
-            df = pd.read_csv(data_path, sep=',', )
             # encode of the Albert encoding
             texts = list()
             labels = list()
             with open(data_path / 'raw.csv', 'r') as istream:
-                for line in istream:
+                for line in tqdm(istream, 'Process data'):
                     parts = line.split(',', 1)
                     review = parts[1].strip('"').strip().replace('","', '')
                     texts.append(review)
