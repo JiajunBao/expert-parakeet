@@ -113,7 +113,7 @@ class Solver(object):
                 if batch_idx % steps_per_eval == 0:
                     mean_loss = self.validate(callback)
                     if mean_loss < self.held_loss:
-                        self.best_model_dict = self.model.state_dict() if self.args.n_gpu <= 1 \
+                        self.best_model_dict = self.model.state_dict() if self.n_gpu <= 1 \
                             else self.model.module.state_dict()
                         self.best_optimizer_dict = self.optimizer.state_dict()
                         self.held_loss = mean_loss
