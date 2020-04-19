@@ -70,6 +70,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         input_ids, attention_mask, token_type_ids, labels = batch
         print(input_ids.shape)
         print(labels.shape)
+        print(self.model.num_labels)
         batch_input = {
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
@@ -186,3 +187,4 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         pred_idx = torch.argmax(smax(pred))
         correct = pred_idx.eq(gold).sum()
         return {"Accuracy": correct / len(gold), "CrossEntropyLoss": nn.CrossEntropyLoss()(gold, pred)}
+
