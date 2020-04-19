@@ -38,6 +38,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         :return: training loss for this batch
         """
         input_ids, attention_mask, token_type_ids, labels = batch
+        print(len(batch))
         batch_input = {
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
