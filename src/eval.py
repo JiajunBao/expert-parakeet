@@ -58,8 +58,9 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
 
 # Print final result
 print(golds)
+
 preds = torch.tensor(preds, dtype=torch.long)
-golds = torch.tensor(golds, dtype=torch.long)
+golds = torch.cat(golds, dim=1)
 print('\n * TEST ACCURACY - %.1f per cent\n' % (accs.avg * 100))
 lb = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
 print(preds.eq(golds).sum().item() / preds.shape[0])
