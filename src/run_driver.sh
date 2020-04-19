@@ -3,7 +3,7 @@
 --output_dir checkpoints/albert/ \
 --epochs 5 \
 --learning_rate 1e-5 \
---per_gpu_batch_size 64 \
+--per_gpu_batch_size 16 \
 --weight_decay 1e-5 \
 --warmup_steps 10 \
 --comment albert
