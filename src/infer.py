@@ -18,4 +18,4 @@ trainer = Solver(args, model)
 preds, golds, _, _ = trainer.infer(Path('data/processed/balanced/test'))
 torch.save(preds, 'checkpoints/albert_balanced/preds.pth')
 torch.save(golds, 'checkpoints/albert_balanced/golds.pth')
-
+print(preds.eq(golds).sum().item() / preds.shape[0])
