@@ -3,6 +3,7 @@ from tqdm.auto import tqdm
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
 import os
+from torch import nn
 
 import copy
 import logging
@@ -229,7 +230,10 @@ class Solver(object):
     def infer(self, data_path):
         data_path = Path(data_path)
         self.setup()
-        dataset = self.get_dataset(data_path, self.args.label)
+        dataset = self.get_dataset(data_path)
         dataloader = DataLoader(dataset, shuffle=False, batch_size=self.batch_size)
         preds, golds = self.__infer(self, dataloader, self.model)
-        return preds, golds, dataset
+        smax = nn.Softmax(dim=1)
+        preds_idx = torch.argmax(smax(preds), dim=1)
+        confidence = preds
+        return preds_idx, golds, dataset, confidence
