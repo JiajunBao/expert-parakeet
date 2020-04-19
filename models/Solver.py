@@ -95,7 +95,7 @@ class Solver(object):
         preds, golds = self.__infer(self, self.dev_dataloader, self.model)
         preds = preds.detach().cpu()
         golds = golds.detach().cpu()
-        mean_loss = self.criterion(preds.view(-1), golds.view(-1))
+        mean_loss = self.criterion(preds, golds)
         if self.n_gpu > 1:
             mean_loss = mean_loss.mean()  # mean() to average on multi-gpu.
         callback.add_scalar('mean_evaluation_loss', mean_loss.item(), self.global_step)
