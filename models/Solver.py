@@ -171,6 +171,7 @@ class Solver(object):
                     pbar.update(1)
         # collect the whole chunk
         preds = torch.cat(preds_list, dim=0).cpu()
+        print(preds.shape)
         golds = torch.cat(golds_list, dim=0).cpu()
         return preds, golds
 
