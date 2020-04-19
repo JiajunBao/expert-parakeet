@@ -74,7 +74,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         }
         outputs = self.model(**batch_input)
         logits = outputs[1].view(-1, self.model.num_labels)
-        return logits
+        return logits, labels
 
     @staticmethod
     def get_dataset(data_path):
