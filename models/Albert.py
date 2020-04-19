@@ -8,7 +8,6 @@ from transformers.optimization import AdamW
 from transformers import AlbertTokenizer, AlbertForSequenceClassification, AlbertConfig
 from transformers import get_linear_schedule_with_warmup
 from torch.utils.data import TensorDataset
-from torch
 
 logger = logging.getLogger(__name__)
 
