@@ -20,6 +20,8 @@ def get_arguments():
                         help='learning rate')
     parser.add_argument('--epochs', type=int, required=True,
                         help='number of training epochs')
+    parser.add_argument('--warmup_steps', type=int, required=True,
+                        help='number of warmup steps')
     parser.add_argument('--per_gpu_batch_size', type=int, required=True,
                         help='batch size')
     parser.add_argument('--comment', type=str, required=True,
