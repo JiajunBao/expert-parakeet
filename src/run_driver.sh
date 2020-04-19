@@ -1,4 +1,4 @@
-python src/albert_driver.py \
+/opt/anaconda/bin/python3 src/albert_driver.py \
 --input_dir data/processed/balanced \
 --output_dir checkpoints/albert/ \
 --epochs 5 \
