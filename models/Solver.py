@@ -71,7 +71,7 @@ class Solver(object):
         self.logger = logging.getLogger(__name__)
         # put onto cuda
         self.model.to(self.device)
-        self.model.data_parallel(self.n_gpu)
+        # self.model.data_parallel(self.n_gpu)
         # fix random seed
         self.fix_random_seed()
 
