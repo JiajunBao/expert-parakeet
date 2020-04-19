@@ -221,9 +221,9 @@ class Solver(object):
         # save the model
         output_path = output_dir / f'{prefix}_model.pth.tar'
         if n_gpu > 1:
-            torch.save({"opt": model_dict.opt, "model": model_dict}, output_path)
+            torch.save({"model": model_dict}, output_path)
         else:
-            torch.save({"opt": model_dict.opt, "model": model_dict}, output_path)
+            torch.save({"model": model_dict}, output_path)
         logger.info(f'Saved model checkpoints to {output_path}')
 
     def infer(self, data_path):
