@@ -105,12 +105,14 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
             # encode of the Albert encoding
             texts = list()
             labels = list()
+            label_names = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
+            label2id = dict(zip(label_names, range(len(label_names))))
             with open(data_path / 'raw.csv', 'r') as istream:
                 for line in tqdm(istream, 'Process data'):
                     parts = line.split(',', 1)
                     review = parts[1].strip('"').strip().replace('","', '')
                     texts.append(review)
-                    labels.append(int(parts[0].strip('"')))
+                    labels.append(label2id[parts[0].strip('"')])
             instances = tokenizer.batch_encode_plus(texts,
                                                     max_length=sequence_length,
                                                     pad_to_max_length=True, return_attention_masks=True,
