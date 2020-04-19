@@ -38,7 +38,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         :return: training loss for this batch
         """
         input_ids, attention_mask, token_type_ids, labels = batch
-        print(len(batch))
+        print(input_ids.shape)
         batch_input = {
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
@@ -67,6 +67,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         :return: logits and ground true label for this batch
         """
         input_ids, attention_mask, token_type_ids, labels = batch
+        print(input_ids.shape)
         batch_input = {
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
