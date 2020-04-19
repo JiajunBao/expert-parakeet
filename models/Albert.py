@@ -38,8 +38,6 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         :return: training loss for this batch
         """
         input_ids, attention_mask, token_type_ids, labels = batch
-        print(input_ids.shape)
-        print(labels.shape)
         batch_input = {
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
@@ -68,20 +66,14 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         :return: logits and ground true label for this batch
         """
         input_ids, attention_mask, token_type_ids, labels = batch
-        print(input_ids.shape)
-        print(labels.shape)
-        print(self.model.num_labels)
         batch_input = {
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
             'token_type_ids': token_type_ids.to(self.device),
-            'labels': None
+            'labels': labels.to(self.device)
         }
         outputs = self.model(**batch_input)
-        print(outputs[0].shape)
-        print(outputs)
         logits = outputs[1].view(-1, self.num_labels)
-        print(logits.shape)
         return logits
 
     @staticmethod
