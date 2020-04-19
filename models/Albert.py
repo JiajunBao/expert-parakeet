@@ -73,7 +73,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
             'labels': labels.to(self.device)
         }
         outputs = self.model(**batch_input)
-        logits = outputs[1].view(-1, self.num_labels)
+        logits = outputs[1].view(-1, self.model.num_labels)
         return logits
 
     @staticmethod
