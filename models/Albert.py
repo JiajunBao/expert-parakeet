@@ -179,7 +179,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
     def get_scores(pred, gold):
         smax = nn.Softmax(dim=1)
         pred_idx = torch.argmax(smax(pred), dim=1)
-        correct = pred_idx.eq(gold).sum()
+        correct = pred_idx.eq(gold).sum().item()
         print(pred_idx)
         print(gold)
         return {"Accuracy": correct / len(gold), "CrossEntropyLoss": nn.CrossEntropyLoss()(pred, gold)}
