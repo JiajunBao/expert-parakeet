@@ -47,7 +47,7 @@ if __name__ == '__main__':
     if opt.resuming and opt.resuming_path:
         model = AlbertForReviewClassification.from_pretrained(opt.resuming_path)
     else:
-        model = AlbertForReviewClassification.from_pretrained('albert-base-v2')
+        model = AlbertForReviewClassification.from_pretrained('albert-base-v2', num_labels=8)
     logger.info("model load completed")
     trainer = Solver(args, model)
     logger.info("trainer load completed")

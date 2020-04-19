@@ -16,7 +16,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
     def __init__(self, config):
         super().__init__(config)
         self.label_names = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
-        self.num_labels = len(self.label_names)
+        # self.num_labels = len(self.label_names)
 
     @staticmethod
     def training_step(self, batch):
