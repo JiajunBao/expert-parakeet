@@ -78,6 +78,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
             'labels': None
         }
         outputs = self.model(**batch_input)
+        print(outputs[0].shape)
         logits = outputs[1].view(-1, self.num_labels)
         print(logits.shape)
         return logits
