@@ -62,7 +62,7 @@ class Solver(object):
         steps_per_eval = len(self.train_dataloader) // num_eval_per_epoch
         self.train(steps_per_eval)
         self.save_best_checkpoints()
-        self.save_final_checkpoints()
+        # self.save_final_checkpoints()
 
     def setup(self):
         # logger
