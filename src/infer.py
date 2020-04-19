@@ -15,7 +15,7 @@ model.load_state_dict(checkpoints["model"])
 args = torch.load('checkpoints/albert/best_trainer.pth.tar')['args']
 logger.info("model load completed")
 trainer = Solver(args, model)
-preds, golds, _, _ = trainer.infer(Path('data/processed/full/test/raw.csv'))
+preds, golds, _, _ = trainer.infer(Path('data/processed/full/test'))
 torch.save(preds, 'checkpoints/albert/preds.pth')
 torch.save(golds, 'checkpoints/albert/golds.pth')
 
