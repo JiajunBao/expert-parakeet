@@ -75,7 +75,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
             'input_ids': input_ids.to(self.device),
             'attention_mask': attention_mask.to(self.device),
             'token_type_ids': token_type_ids.to(self.device),
-            'labels': labels.to(self.device)
+            'labels': None
         }
         outputs = self.model(**batch_input)
         logits = outputs[1].view(-1, self.num_labels)
