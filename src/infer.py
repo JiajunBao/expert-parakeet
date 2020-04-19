@@ -8,8 +8,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# item()
 
+# dirty code
 checkpoints_path = Path('checkpoints/albert')
 
 checkpoints = torch.load(checkpoints_path / 'best_model.pth.tar')
