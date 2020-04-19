@@ -121,7 +121,7 @@ class Solver(object):
                         # self.scheduler.step()  # Update learning rate schedule
                     self.model.train()
                 self.model.zero_grad()
-                loss = self.__training_step(batch)
+                loss = self.__training_step(self, batch)
                 if self.n_gpu > 1:
                     loss = loss.mean()  # mean() to average on multi-gpu.
                 loss.backward()
