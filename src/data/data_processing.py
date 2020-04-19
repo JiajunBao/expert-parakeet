@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     # get the absolute path to the original dataset
     root_filepath = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    rel_input_filepath = "../raw/renttherunway_final_data_500.json"
+    rel_input_filepath = "../raw/renttherunway_final_data.json"
     rel_output_filepath = "data/interim/processed_data.csv"
     input_filepath = os.path.join(root_filepath, rel_input_filepath)
     output_filepath = os.path.join(root_filepath, rel_output_filepath)
