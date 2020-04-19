@@ -27,6 +27,8 @@ def get_arguments():
     parser.add_argument('--seed', type=int, default=42,
                         help='random seed to fix')
     # parameters for the model
+    parser.add_argument('--resuming', action='store_true',
+                        help='where to load weights from checkpoints')
     parser.add_argument('--resume_path', type=Path, required=False, default=None,
                         help='model to resume the training from')
     parser.add_argument('--freeze', action='store_true',
@@ -38,7 +40,7 @@ def get_arguments():
 
 if __name__ == '__main__':
     args, opt = get_arguments()
-    if opt.resuming_path:
+    if opt.resuming and opt.resuming_path:
         model = AlbertForReviewClassification.from_pretrained(opt.resuming_path)
     else:
         model = AlbertForReviewClassification.from_pretrained('albert-base-v2')
