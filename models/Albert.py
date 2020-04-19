@@ -97,7 +97,7 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         return dataset
         """
         if (data_path / 'cache.pth.tar').exists():
-            dataset = torch.load(data_path)
+            dataset = torch.load(data_path / 'cache.pth.tar')
             logger.info(f'Loaded the dataset at {data_path}.')
         else:
             tokenizer = AlbertTokenizer.from_pretrained('albert-base-v2')
