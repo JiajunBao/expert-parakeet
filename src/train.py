@@ -26,7 +26,7 @@ fine_tune_word_embeddings = True  # fine-tune word embeddings?
 # Training parameters
 start_epoch = 0  # start at this epoch
 batch_size = 128  # batch size
-lr = 5e-4  # learning rate
+lr = 8e-4  # learning rate
 momentum = 0.9  # momentum
 workers = 4  # number of workers for loading data in the DataLoader
 epochs = 400  # number of epochs to run
