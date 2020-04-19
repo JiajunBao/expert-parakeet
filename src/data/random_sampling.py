@@ -88,26 +88,33 @@ def vocabulary_count(df):
     #     words_N = sum(counter.values())
     #     print("{} distinct words, {} words in category {}".format(distinct_words_N, words_N, index))
 
+    hashmap_sent = collections.defaultdict(int)
+    hashmap = collections.defaultdict(lambda: collections.defaultdict(int))
     for index, row in df.iterrows():
-
+        occasion = row['label']
         text = " ".join([str(sent).replace("\"", "").replace("\'", "") for sent in row['data']])
-        # occasion =
-        counter = collections.Counter(text.split(" "))
-        print(row['label'])
-        print(counter)
+        text = text.split(" ")
+        for word in text:
+            hashmap[occasion][word] += 1
+        hashmap_sent[occasion] += 1
+    print("hahaha")
+
+    for key, submap in hashmap.items():
+        distinct_words_N = len(submap)
+        words_N = sum(submap.values())
+        print("{} distinct words, {} words in category {}".format(distinct_words_N, words_N, key))
+    for key, value in hashmap_sent.items():
+        print("{} sentences in category {}".format(value, key))
 
 
-
-
-# split human count case From test data
-def human_count(input_filepath, output_filepath):
+def human_shuffle(input_filepath):
+    lines = []
+    random.seed(3)
     with open(input_filepath, 'r') as file:
-        lines = []
-        for raw_line in file:
-
-            line = raw_line.strip().split(",")
-            newline = " ".join(line[1:]) + ", " + line[0]
-
+        for line in file:
+            lines.append(line)
+    random.shuffle(lines)
+    data_processing.output_file(lines, output_filepath + "human_test_shuffle.csv")
 
 
 
@@ -130,5 +137,9 @@ if __name__ == "__main__":
     # undersampling(dataframe)
 
     # print the vocabulary count of each catalog
-    vocabulary_count(dataframe)
-    # print(dataframe)
+    # vocabulary_count(dataframe)
+
+    # output human_ramdon_shuffle file
+    human_shuffle(os.path.join(root_filepath, "data/interim/human_test.csv"))
+
+
