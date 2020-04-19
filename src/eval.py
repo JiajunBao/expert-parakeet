@@ -49,7 +49,7 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
     _, predictions = scores.max(dim=1)  # (n_documents)
     correct_predictions = torch.eq(predictions, labels).sum().item()
     accuracy = correct_predictions / labels.size(0)
-    preds.append(correct_predictions)
+    preds.append(predictions)
     golds.append(labels)
     # Keep track of metrics
     accs.update(accuracy, labels.size(0))
@@ -59,7 +59,7 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
 # Print final result
 
 
-preds = torch.tensor(preds, dtype=torch.long).cpu()
+preds = torch.cat(preds).view(-1).cpu()
 golds = torch.cat(golds).view(-1).cpu()
 print(preds.shape)
 print(golds.shape)
