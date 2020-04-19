@@ -158,9 +158,9 @@ class AlbertForReviewClassification(AlbertForSequenceClassification):
         ]
         optimizer = AdamW(optimizer_grouped_parameters, lr=self.args.learning_rate, eps=self.args.adam_epsilon)
         # get a linear scheduler
-        scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=self.args.warmup_steps,
-                                                    num_training_steps=self.args.num_train_optimization_steps)
-
+        # scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=self.args.warmup_steps,
+        #                                             num_training_steps=self.args.num_train_optimization_steps)
+        scheduler = None
         return optimizer, scheduler
 
     def get_criterion(self):
