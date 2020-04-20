@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from utils import preprocess, rev_label_map
+from src.utils import preprocess, rev_label_map
 import json
 import os
 from nltk.tokenize import PunktSentenceTokenizer, TreebankWordTokenizer
@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load model
-checkpoint = 'checkpoint_han.pth.tar'
+checkpoint = 'src/checkpoint_han.pth.tar'
 checkpoint = torch.load(checkpoint)
 model = checkpoint['model']
 model = model.to(device)

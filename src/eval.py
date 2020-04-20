@@ -1,19 +1,19 @@
 import time
-from utils import *
-from datasets import HANDataset
+from src.utils import *
+from src.datasets import HANDataset
 
-from model import HierarchialAttentionNetwork
+from models.model import HierarchialAttentionNetwork
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Data parameters
-data_folder = './checkpoints'
+data_folder = './src/checkpoints'
 
 # Evaluation parameters
 batch_size = 64  # batch size
 workers = 4  # number of workers for loading data in the DataLoader
 print_freq = 2000  # print training or validation status every __ batches
-checkpoint = 'checkpoint_han.pth.tar'
+checkpoint = './src/checkpoint_han.pth.tar'
 
 # Load model
 checkpoint = torch.load(checkpoint)
@@ -49,7 +49,7 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
     _, predictions = scores.max(dim=1)  # (n_documents)
     correct_predictions = torch.eq(predictions, labels).sum().item()
     accuracy = correct_predictions / labels.size(0)
-    preds.append(correct_predictions)
+    preds.append(predictions)
     golds.append(labels)
     # Keep track of metrics
     accs.update(accuracy, labels.size(0))
@@ -57,9 +57,12 @@ for i, (documents, sentences_per_document, words_per_sentence, labels) in enumer
     start = time.time()
 
 # Print final result
-print(golds)
-preds = torch.tensor(preds, dtype=torch.long)
-golds = torch.tensor(golds, dtype=torch.long)
+
+
+preds = torch.cat(preds).view(-1).cpu()
+golds = torch.cat(golds).view(-1).cpu()
+print(preds.shape)
+print(golds.shape)
 print('\n * TEST ACCURACY - %.1f per cent\n' % (accs.avg * 100))
 lb = ['date', 'everyday', 'formal affair', 'other', 'party', 'vacation', 'wedding', 'work']
 print(preds.eq(golds).sum().item() / preds.shape[0])

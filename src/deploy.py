@@ -1,15 +1,15 @@
 import torch
 from torch import nn
-from utils import preprocess, rev_label_map
+from src.utils import preprocess, rev_label_map
 import json
 import os
 from nltk.tokenize import PunktSentenceTokenizer, TreebankWordTokenizer
 
-from model import HierarchialAttentionNetwork
+from models.model import HierarchialAttentionNetwork
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-asset_folder = '.'
+asset_folder = './src'
 # Load model
 checkpoint = os.path.join(asset_folder, 'checkpoint_han.pth.tar')
 checkpoint = torch.load(checkpoint, map_location='cpu')
@@ -23,7 +23,7 @@ sentence_limit = 15
 word_limit = 20
 
 # Word map to encode with
-with open(os.path.join('./checkpoints/word_map.json'), 'r') as j:
+with open(os.path.join('./src/checkpoints/word_map.json'), 'r') as j:
     word_map = json.load(j)
 
 # Tokenizers
@@ -104,5 +104,5 @@ def get_activation(document):
         'activations': activation_maps,
         'doc': doc,
         'scores': scores.tolist(),
-        'categories': rev_label_map
+        'categories': rev_label_map[prediction.item()]
     }

@@ -7,7 +7,7 @@ from flask import Response
 from flask import jsonify
 
 import numpy
-from deploy import get_activation
+from src.deploy import get_activation
 # from classify import classify
 
 
