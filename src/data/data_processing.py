@@ -87,6 +87,31 @@ def groupby_attribute(df, key, value):
     return item_user_map
 
 
+def groupby_multiattributes(df, keys, values, minCount=1):
+    # group by multiattributes
+    itemCounts = df.user_id.value_counts()
+    reduced_df = df[df.user_id.isin(itemCounts.index[itemCounts.gt(1)])]
+    reduced_df = reduced_df[keys + values]
+    reduced_df = reduced_df.groupby(keys).aggregate(lambda x: set(x))
+    for key, values in reduced_df.items():
+        if len(values) < minCount: del reduced_df[key]
+    return reduced_df
+
+def find_frequent_category(df, freq_sets):
+    hashmap = collections.defaultdict(lambda: collections.defaultdict(int))
+    for idx, row in df.iterrows():
+        for freq_set in freq_sets:
+            if freq_set.issubset(row['category']):
+                for occasion in row['rented for']:
+                    for set_item in freq_set:
+                        hashmap[set_item][occasion] += 1
+    for key, values in hashmap.items():
+        print(key)
+        print({k: v for k, v in sorted(values.items(), key=lambda x: -x[1])})
+    # print(hashmap)
+
+
+
 def output_groupby(map, outputpath):
     lines = [",".join(list(value)) + "\n" for key, value in map.items()]
     output_file(lines, outputpath)
@@ -108,20 +133,16 @@ if __name__ == "__main__":
     output_filepath = os.path.join(root_filepath, rel_output_filepath)
 
     dataset = read_file(input_filepath, "")
+    freq_sets = [{"gown", "sheath"}, {"dress", "sheath"}, {"maxi, dress"}, {"romper", "dress"},
+                 {"jumpsuit", "dress"}, {"shift", "dress"}, {"jacket", "dress"}, {"gown", "dress"}]
     # feature = ["rented for", "rating", "category"]
 
-    # get rating
-    # dataset = dataset[dataset["rating"].notna()]
-    # print(attribute_counts(dataset, "rating", Type.FLOAT))
-    # output_data = feature_selection(dataset, "review_text", "rating")
-    # output_file(output_data, output_filepath)
-
     # get rented for
-    dataset = dataset[dataset["rented for"].notna()]
-    available_label(dataset, "rented for", Type.STRING)
-    print(attribute_counts(dataset, "rented for", Type.STRING))
-    output_data = feature_selection(dataset, "review_text", "rented for", Type.STRING)
-    output_file(output_data, output_filepath)
+    # dataset = dataset[dataset["rented for"].notna()]
+    # available_label(dataset, "rented for", Type.STRING)
+    # print(attribute_counts(dataset, "rented for", Type.STRING))
+    # output_data = feature_selection(dataset, "review_text", "rented for", Type.STRING)
+    # output_file(output_data, output_filepath)
 
     # get category
     # dataset = dataset[dataset["category"].notna()]
@@ -132,4 +153,15 @@ if __name__ == "__main__":
     # get hashmap key = user_id, value = list of item_id
     # item_user_map = groupby_attribute(dataset, ['user_id'], 'category')
     # output_groupby(item_user_map, os.path.join(root_filepath, "data/interim/user_by_item.csv"))
+
+    # get hashmap key = user_id, date, value = item category and occasion.
+    # reduced_df = groupby_multiattributes(dataset, ['user_id'], ['rented for', 'category'])
+    # find_frequent_category(reduced_df, freq_sets)
+
+    item_user_map = groupby_attribute(dataset, ['user_id'], ['rented for'])
+    print(item_user_map)
+
+
+
+
 
