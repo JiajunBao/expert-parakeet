@@ -20,7 +20,7 @@ python3 src/albert_driver.py \
 --comment albert
 
 # test
-python3 infer.py
+python3 src/infer.py
 
 # train hattn
 set -x

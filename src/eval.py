@@ -13,7 +13,7 @@ data_folder = './src/checkpoints'
 batch_size = 64  # batch size
 workers = 4  # number of workers for loading data in the DataLoader
 print_freq = 2000  # print training or validation status every __ batches
-checkpoint = 'checkpoint_han.pth.tar'
+checkpoint = './src/checkpoint_han.pth.tar'
 
 # Load model
 checkpoint = torch.load(checkpoint)
