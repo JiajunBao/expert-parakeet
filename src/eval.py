@@ -7,7 +7,7 @@ from models.model import HierarchialAttentionNetwork
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Data parameters
-data_folder = './checkpoints'
+data_folder = './src/checkpoints'
 
 # Evaluation parameters
 batch_size = 64  # batch size

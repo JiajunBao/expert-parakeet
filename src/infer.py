@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 # dirty code
-checkpoints_path = Path('checkpoints/albert')
+checkpoints_path = Path('src/checkpoints/albert')
 
 checkpoints = torch.load(checkpoints_path / 'best_model.pth.tar')
 model = AlbertForReviewClassification.from_pretrained('albert-base-v2', num_labels=8)

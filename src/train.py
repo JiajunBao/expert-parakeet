@@ -8,7 +8,7 @@ from src.datasets import HANDataset
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 # Data parameters
-data_folder = './checkpoints'
+data_folder = './src/checkpoints'
 with open(os.path.join(data_folder, 'word_map.json'), 'r') as j:
     word_map = json.load(j)
 
