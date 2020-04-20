@@ -9,12 +9,23 @@ source env/bin/activate
 pip install -r requirements.txt
 
 # train ALBERT
-bash src/run_driver.sh
+python3 src/albert_driver.py \
+--input_dir data/processed/full \
+--output_dir checkpoints/albert/ \
+--epochs 5 \
+--learning_rate 1e-5 \
+--per_gpu_batch_size 32 \
+--weight_decay 1e-5 \
+--warmup_steps 10 \
+--comment albert
+
 # test
 python3 infer.py
 
 # train hattn
-bash src/run_training.sh
+set -x
+python3 src/create_input_files.py
+python3 src/train.py 
 # test
 python3 src/eval.py
 
