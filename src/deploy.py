@@ -104,5 +104,5 @@ def get_activation(document):
         'activations': activation_maps,
         'doc': doc,
         'scores': scores.tolist(),
-        'categories': rev_label_map
+        'categories': rev_label_map[prediction.item()]
     }
