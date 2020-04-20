@@ -1,5 +1,6 @@
-# EECS476-Final-Project
+# expert-parakeet
 
+Code Release
 
 Reproduce results:
 ```
