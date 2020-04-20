@@ -131,15 +131,15 @@ if __name__ == "__main__":
     dataframe = noise_remove(dataframe)
 
     # output the random_splitting
-    # random_splitting(dataframe)
+    random_splitting(dataframe)
 
     # output the random_sampling
-    # undersampling(dataframe)
+    undersampling(dataframe)
 
     # print the vocabulary count of each catalog
-    # vocabulary_count(dataframe)
+    vocabulary_count(dataframe)
 
     # output human_ramdon_shuffle file
-    human_shuffle(os.path.join(root_filepath, "data/interim/human_test.csv"))
+    # human_shuffle(os.path.join(root_filepath, "data/interim/human_test.csv"))
 
 

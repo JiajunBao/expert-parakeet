@@ -138,11 +138,11 @@ if __name__ == "__main__":
     # feature = ["rented for", "rating", "category"]
 
     # get rented for
-    # dataset = dataset[dataset["rented for"].notna()]
-    # available_label(dataset, "rented for", Type.STRING)
-    # print(attribute_counts(dataset, "rented for", Type.STRING))
-    # output_data = feature_selection(dataset, "review_text", "rented for", Type.STRING)
-    # output_file(output_data, output_filepath)
+    dataset = dataset[dataset["rented for"].notna()]
+    available_label(dataset, "rented for", Type.STRING)
+    print(attribute_counts(dataset, "rented for", Type.STRING))
+    output_data = feature_selection(dataset, "review_text", "rented for", Type.STRING)
+    output_file(output_data, output_filepath)
 
     # get category
     # dataset = dataset[dataset["category"].notna()]
