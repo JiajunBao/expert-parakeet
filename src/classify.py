@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-from utils import preprocess, rev_label_map
+from src.utils import preprocess, rev_label_map
 import json
 import os
 from nltk.tokenize import PunktSentenceTokenizer, TreebankWordTokenizer

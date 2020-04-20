@@ -1,8 +1,8 @@
 import time
-from utils import *
-from datasets import HANDataset
+from src.utils import *
+from src.datasets import HANDataset
 
-from model import HierarchialAttentionNetwork
+from models.model import HierarchialAttentionNetwork
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

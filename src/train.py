@@ -2,9 +2,9 @@ import time
 import torch
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
-from model import HierarchialAttentionNetwork
-from utils import *
-from datasets import HANDataset
+from models.model import HierarchialAttentionNetwork
+from src.utils import *
+from src.datasets import HANDataset
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 # Data parameters
