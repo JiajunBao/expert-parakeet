@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 /opt/anaconda/bin/python3 src/albert_driver.py \
 --input_dir data/processed/full \
 --output_dir checkpoints/albert/ \
